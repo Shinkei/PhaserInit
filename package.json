@@ -1,0 +1,19 @@
+{
+  "name": "phaserinit",
+  "version": "1.0.0",
+  "description": "startup project to work with phaser",
+  "main": "index.js",
+  "scripts": {
+    "dev": "lite-server"
+  },
+  "keywords": [
+    "phaser",
+    "init"
+  ],
+  "author": "Jorge I. Ramírez <ing.jorgeivanramirezh@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "lite-server": "^2.3.0",
+    "phaser-ce": "^2.7.10"
+  }
+}
