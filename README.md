@@ -8,7 +8,7 @@ More resources:
 - [Phaser turotial "Making your first phaser game"](http://phaser.io/tutorials/making-your-first-phaser-game)
 
 ## Install dependencies
-> - npm i
+> ```npm i```
 
 ## Run Project:
-> - npm run dev
+> ```npm run dev```
