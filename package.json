@@ -4,7 +4,9 @@
   "description": "startup project to work with phaser",
   "main": "index.js",
   "scripts": {
-    "dev": "lite-server"
+    "dev": "lite-server",
+    "localtunnel": "lt --port 3000",
+    "share": "npm-run-all --parallel dev localtunnel"
   },
   "keywords": [
     "phaser",
@@ -14,6 +16,10 @@
   "license": "MIT",
   "devDependencies": {
     "lite-server": "^2.3.0",
-    "phaser-ce": "^2.7.10"
+    "localtunnel": "^1.8.3",
+    "npm-run-all": "^4.0.2"
+  },
+  "dependencies": {
+    "phaser-ce": "^2.8.1"
   }
 }
