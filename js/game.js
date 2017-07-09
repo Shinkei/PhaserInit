@@ -1,5 +1,5 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-var platform, player, cursor, stars, score, baddie, baddie_go_right;
+var platform, player, cursor, stars, score, baddie, baddie_go_right, fxAudio;
 
 function preload() {
     game.load.image('sky', 'assets/sky.png');
@@ -7,6 +7,8 @@ function preload() {
     game.load.image('star', 'assets/star.png');
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     game.load.spritesheet('baddie', 'assets/baddie.png', 32, 32);
+    game.load.audio('sfx', 'assets/audio/p-ping.mp3');
+
 }
 
 function create() {
@@ -15,6 +17,10 @@ function create() {
 
     // background
     game.add.sprite(0, 0, 'sky');
+
+    //  Audio setup
+    fxAudio = game.add.audio('sfx');
+    fxAudio.allowMultiple = true;
 
     // group the ground and plataforms to walk and jump
     platform = game.add.group();
@@ -61,6 +67,8 @@ function create() {
         var star = stars.create(i * 70, 0, 'star');
         star.body.gravity.y = 300;
         star.body.bounce.y = 0.4 + Math.random() * 0.2;
+        // add sound to each star object
+        fxAudio.addMarker('star',0,1.5);
     }
 
     // baddie
@@ -80,6 +88,7 @@ function create() {
     // score
     score = 0;
     scoreText = game.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
+
 }
 
 function update() {
@@ -127,10 +136,11 @@ function update() {
 
     // baddie kills
     game.physics.arcade.overlap(player, baddie, killPlayer, null, this);
-
 }
 
 function collectStar(player, star){
+    // add sound to start before kill it
+    fxAudio.play('star');
     star.kill();
     score += 10;
     scoreText.text = 'Score: ' + score;
