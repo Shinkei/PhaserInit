@@ -9,4 +9,5 @@ More resources:
 
 Run Project:
 
+- npm install
 - npm run dev
