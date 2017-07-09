@@ -7,7 +7,8 @@ More resources:
 - [Phaser Github](https://github.com/photonstorm/phaser-examples)
 - [Phaser turotial "Making your first phaser game"](http://phaser.io/tutorials/making-your-first-phaser-game)
 
-Run Project:
+## Install dependencies
+> ```npm i```
 
-- npm install
-- npm run dev
+## Run Project:
+> ```npm run dev```
