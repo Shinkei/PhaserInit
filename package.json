@@ -4,6 +4,7 @@
   "description": "startup project to work with phaser",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint ./js/*.js",
     "dev": "lite-server",
     "localtunnel": "lt --port 3000",
     "share": "npm-run-all --parallel dev localtunnel"
@@ -15,6 +16,13 @@
   "author": "Jorge I. Ramírez <ing.jorgeivanramirezh@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^4.2.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
     "lite-server": "^2.3.0",
     "localtunnel": "^1.8.3",
     "npm-run-all": "^4.0.2"
