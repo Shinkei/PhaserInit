@@ -1,14 +1,16 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-var platform, player, cursor, stars, score, baddie, baddie_go_right, sfxAudio, scoreText, sfxDeath;
+var platform, player, cursor, stars, score, baddie, baddie_go_right, sfxStar, scoreText, sfxDeath, diamonds;
 
 function preload() {
   game.load.image('sky', 'assets/sky.png');
   game.load.image('ground', 'assets/platform.png');
   game.load.image('star', 'assets/star.png');
+  game.load.image('diamond', 'assets/diamond.png');
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
   game.load.spritesheet('baddie', 'assets/baddie.png', 32, 32);
   game.load.audio('sfx:ping', 'assets/audio/p-ping.mp3');
   game.load.audio('sfx:death', 'assets/audio/death.wav');
+  game.load.audio('sfx:diamond', 'assets/audio/diamond.wav');
 }
 
 function create() {
@@ -19,10 +21,12 @@ function create() {
   game.add.sprite(0, 0, 'sky');
 
   //  Audio setup
-  sfxAudio = game.add.audio('sfx:ping');
-  sfxAudio.allowMultiple = true;
+  sfxStar = game.add.audio('sfx:ping');
+  sfxStar.allowMultiple = true;
   sfxDeath = game.add.audio('sfx:death');
   sfxDeath.allowMultiple = true;
+  sfxDiamod = game.add.audio('sfx:diamond');
+  sfxDiamod.allowMultiple = true;
 
   // group the ground and plataforms to walk and jump
   platform = game.add.group();
@@ -70,7 +74,20 @@ function create() {
     star.body.gravity.y = 300;
     star.body.bounce.y = 0.4 + Math.random() * 0.2;
     // add sound to each star object
-    sfxAudio.addMarker('star',0,1.5);
+    sfxStar.addMarker('star',0,1.5);
+  }
+
+  // create the diamonds
+  diamonds = game.add.group();
+  diamonds.enableBody = true;
+
+  // create the diamonds
+  for (var i = 0; i < 6; i++) {
+    var diamond = diamonds.create(i * 120, 20, 'diamond');
+    diamond.body.gravity.y = 200;
+    diamond.body.bounce.y = 0.2 + Math.random() * 0.4;
+    // add sound to each diamond object
+    sfxDiamod.addMarker('diamond',0,1.5);
   }
 
   // baddie
@@ -136,15 +153,27 @@ function update() {
   game.physics.arcade.collide(stars, platform);
   game.physics.arcade.overlap(player, stars, collectStar, null, this);
 
+  // starts diamond
+  game.physics.arcade.collide(diamonds, platform);
+  game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this);
+
   // baddie kills
   game.physics.arcade.overlap(player, baddie, killPlayer, null, this);
 }
 
 function collectStar(player, star){
   // add sound to start before kill it
-  sfxAudio.play('star');
+  sfxStar.play('star');
   star.kill();
   score += 10;
+  scoreText.text = 'Score: ' + score;
+}
+
+function collectDiamond(player, diamond){
+  // add sound to diamond before kill it
+  sfxDiamod.play('diamond');
+  diamond.kill();
+  score += 13;
   scoreText.text = 'Score: ' + score;
 }
 
