@@ -1,5 +1,5 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-var platform, player, cursor, stars, score, baddie, baddie_go_right, sfxStar, scoreText, sfxDeath, diamonds;
+var platform, player, cursor, stars, score, baddie, baddie_go_right, sfxStar, scoreText, sfxDeath, diamonds, sfxDiamond;
 
 function preload() {
   game.load.image('sky', 'assets/sky.png');
@@ -25,8 +25,8 @@ function create() {
   sfxStar.allowMultiple = true;
   sfxDeath = game.add.audio('sfx:death');
   sfxDeath.allowMultiple = true;
-  sfxDiamod = game.add.audio('sfx:diamond');
-  sfxDiamod.allowMultiple = true;
+  sfxDiamond = game.add.audio('sfx:diamond');
+  sfxDiamond.allowMultiple = true;
 
   // group the ground and plataforms to walk and jump
   platform = game.add.group();
@@ -87,7 +87,7 @@ function create() {
     diamond.body.gravity.y = 200;
     diamond.body.bounce.y = 0.2 + Math.random() * 0.4;
     // add sound to each diamond object
-    sfxDiamod.addMarker('diamond',0,1.5);
+    sfxDiamond.addMarker('diamond',0,1.5);
   }
 
   // baddie
@@ -171,7 +171,7 @@ function collectStar(player, star){
 
 function collectDiamond(player, diamond){
   // add sound to diamond before kill it
-  sfxDiamod.play('diamond');
+  sfxDiamond.play('diamond');
   diamond.kill();
   score += 13;
   scoreText.text = 'Score: ' + score;
