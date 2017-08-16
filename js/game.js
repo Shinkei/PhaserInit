@@ -113,6 +113,7 @@ function create() {
 function update() {
   // Allows the player collide with the ground
   var hitPlatform = game.physics.arcade.collide(player, platform);
+  var hitPlatformBaddie = game.physics.arcade.collide(baddie, platform);
   game.physics.arcade.collide(baddie, platform);
 
   // reset the player velocity
@@ -129,19 +130,25 @@ function update() {
     player.animations.stop();
     player.frame = 4;
   }
-
-  if (baddie_go_right) {
+  if(player.body.y+16 > baddie.body.y){
+    if(baddie.x === game.world.width - 32){ // 32 is the width of the buddie
+      baddie.body.velocity.x = -80;
+      baddie.animations.play('left');
+    }else if(baddie.x === 0){
+      baddie.body.velocity.x = 80;
+      baddie.animations.play('right');
+    }
+  }else if(player.body.y+16 < Math.floor(baddie.body.y) && baddie.body.touching.down && hitPlatformBaddie){
+    console.log("player "+player.body.y);
+    console.log("baddie "+baddie.body.y);
+    baddie.body.velocity.y = -350;
+  }else if (player.body.x > baddie.body.x) {
     baddie.body.velocity.x = 80;
     baddie.animations.play('right');
-    if(baddie.x === game.world.width - 32){ // 32 is the width of the buddie
-      baddie_go_right = false;
-    }
-  }else{
+
+  }else if(player.body.x < baddie.body.x){
     baddie.body.velocity.x = -80;
     baddie.animations.play('left');
-    if (baddie.x === 0) {
-      baddie_go_right = true;
-    }
   }
 
   // Jump
