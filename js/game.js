@@ -119,7 +119,7 @@ function update() {
   player.body.velocity.x = 0;
 
   // Move
-  if(cursor.left.isDown){
+  if(cursor.left.isDown){    
     player.body.velocity.x = -150;
     player.animations.play('left');
   }else if(cursor.right.isDown){
@@ -178,7 +178,11 @@ function collectDiamond(player, diamond){
 }
 
 function killPlayer(player){
-  sfxDeath.play();
-  player.kill();
-  scoreText.text = 'GAME OVER';
+  //death sound
+  sfxDeath.play();  
+  player.kill();  
+  var gameOverText = "\n...::GAME OVER::...";
+  var style = { font: "65px Arial", fill: "#FFFFFF", align: "center"};
+  game.add.text(game.world.centerX-300, 0, gameOverText, style);
+  
 }
