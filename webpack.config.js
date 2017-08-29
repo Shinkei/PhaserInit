@@ -1,66 +1,32 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var path = require('path');
+const path = require('path');
 var webpack = require('webpack');
 
-var isProd = process.env.NODE_ENV === 'production'; //get the environment variable and get true or false
-var cssDev = ['style-loader', 'css-loader', 'sass-loader'];
-var cssProd = ExtractTextPlugin.extract({
-    fallbackLoader: 'style-loader',
-    use: ['css-loader', 'sass-loader'],
-    publicPath: '/dist'
-});
-
-var cssConfig = isProd ? cssProd : cssDev;
+var phaserModule = path.join(__dirname, '/node_modules/phaser/');
+var phaser = path.join(phaserModule, 'build/custom/phaser-split.js'),
+pixi = path.join(phaserModule, 'build/custom/pixi.js'),
+p2 = path.join(phaserModule, 'build/custom/p2.js');
 
 module.exports = {
-    entry: {
-        app: './js/game.js'
-    },
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: '[name].bundle.js'
-    },
-    module: {
-        rules: [
-            {
-                test: /\.scss$/,
-                use: cssConfig
-            },
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: 'babel-loader'
-            },
-            {
-                test: /\.(gif|svg|png|jpe?g)$/i,
-                use: [
-                    'file-loader',
-                    {    //this shouldn't be an object, just the name of the loader but a bug make it crash
-                        loader:'image-webpack-loader',
-                        options:{}
-                    }
-                ]
-            }
+  entry: './js/game.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  devServer: {
+    contentBase: './dist',
+    port: 3000
+  },
+  module: {
+        loaders: [
+            { test: /pixi.js/, use: "script-loader" },
+            { test: /p2\.js/, use: 'script-loader' }
         ]
     },
-    devServer: {
-        contentBase: path.join(__dirname, 'dist'),
-        compress: true,
-        port: 3000,
-        hot: true,
-        stats: 'errors-only',
-        open: true
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: 'Phaser Game',
-            hash: true,
-            excludeChunks: ['contact'],
-            filename: './index.html',
-            template: './index.html'
-        }),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NamedModulesPlugin()
-    ]
-}
+    resolve: {
+        alias: {
+            'phaser': phaser,
+            'pixi.js': pixi,
+            'p2': p2,
+        }
+    }
+};

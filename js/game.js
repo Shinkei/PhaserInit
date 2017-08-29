@@ -1,3 +1,7 @@
+import 'pixi.js';
+import 'p2';
+import {Phaser} from 'phaser';
+
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var platform, player, cursor, stars, score, baddie, baddie_go_right, sfxStar, scoreText, sfxDeath, diamonds, sfxDiamond;
 
