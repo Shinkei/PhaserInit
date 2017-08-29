@@ -25,7 +25,9 @@
     "eslint-plugin-standard": "^3.0.1",
     "lite-server": "^2.3.0",
     "localtunnel": "^1.8.3",
-    "npm-run-all": "^4.0.2"
+    "npm-run-all": "^4.0.2",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
     "phaser-ce": "^2.8.1"
