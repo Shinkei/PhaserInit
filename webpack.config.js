@@ -20,7 +20,7 @@ module.exports = {
       loaders: [
               { test: /pixi.js/, use: "script-loader" },
               { test: /p2\.js/, use: 'script-loader' },
-              {test: /\.(png|svg|jpg|gif|wav|mp3)$/, use: 'file-loader' }
+              { test: /\.(png|svg|jpg|gif|wav|mp3)$/, use: 'file-loader' }
       ]
     },
     resolve: {
