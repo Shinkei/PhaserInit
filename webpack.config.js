@@ -13,14 +13,15 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   devServer: {
-    contentBase: './dist',
+    contentBase: './',
     port: 3000
   },
   module: {
-        loaders: [
-            { test: /pixi.js/, use: "script-loader" },
-            { test: /p2\.js/, use: 'script-loader' }
-        ]
+      loaders: [
+              { test: /pixi.js/, use: "script-loader" },
+              { test: /p2\.js/, use: 'script-loader' },
+              {test: /\.(png|svg|jpg|gif|wav|mp3)$/, use: 'file-loader' }
+      ]
     },
     resolve: {
         alias: {

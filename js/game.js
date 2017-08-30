@@ -1,20 +1,30 @@
 import 'pixi.js';
 import 'p2';
 import {Phaser} from 'phaser';
+import SKY from './../assets/sky.png';
+import GROUND from './../assets/platform.png';
+import STAR from './../assets/star.png';
+import DIAMOND from './../assets/diamond.png';
+import DUDE from './../assets/dude.png';
+import BADDIE from './../assets/baddie.png';
+import PING_SOUND from './../assets/audio/p-ping.mp3';
+import DEATH_SOUND from './../assets/audio/death.wav';
+import DIAMOND_SOUND from './../assets/audio/diamond.wav';
+
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var platform, player, cursor, stars, score, baddie, baddie_go_right, sfxStar, scoreText, sfxDeath, diamonds, sfxDiamond;
 
 function preload() {
-  game.load.image('sky', 'assets/sky.png');
-  game.load.image('ground', 'assets/platform.png');
-  game.load.image('star', 'assets/star.png');
-  game.load.image('diamond', 'assets/diamond.png');
-  game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-  game.load.spritesheet('baddie', 'assets/baddie.png', 32, 32);
-  game.load.audio('sfx:ping', 'assets/audio/p-ping.mp3');
-  game.load.audio('sfx:death', 'assets/audio/death.wav');
-  game.load.audio('sfx:diamond', 'assets/audio/diamond.wav');
+  game.load.image('sky', SKY);
+  game.load.image('ground', GROUND);
+  game.load.image('star', STAR);
+  game.load.image('diamond', DIAMOND);
+  game.load.spritesheet('dude', DUDE, 32, 48);
+  game.load.spritesheet('baddie', BADDIE, 32, 32);
+  game.load.audio('sfx:ping', PING_SOUND);
+  game.load.audio('sfx:death', DEATH_SOUND);
+  game.load.audio('sfx:diamond', DIAMOND_SOUND);
 }
 
 function create() {
