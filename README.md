@@ -14,5 +14,8 @@ More resources:
 ## Install dependencies
 > ```npm i```
 
+## Build the Project to deploy
+> ```npm run build```
+
 ## Run Project:
-> ```npm run dev```
+> ```npm start```
