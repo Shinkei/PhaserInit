@@ -180,9 +180,19 @@ function collectDiamond(player, diamond){
 function killPlayer(player){
   //death sound
   sfxDeath.play();  
-  player.kill();  
+  
+  //loop animation to show the player going to heaven
+  player.animations.add('swim');
+  player.animations.play('swim', 30, true);
+  game.add.tween(player).to({ y: 70 }, 2000, Phaser.Easing.Quadratic.InOut, true, 0, 1000, true);
+  game.time.events.loop(4000, resetGame, this);  
+  
   var gameOverText = "\n...::GAME OVER::...";
   var style = { font: "65px Arial", fill: "#FFFFFF", align: "center"};
   game.add.text(game.world.centerX-300, 0, gameOverText, style);
   
+}
+
+function resetGame(){
+  player.kill();  
 }
