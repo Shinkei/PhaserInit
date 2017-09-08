@@ -1,6 +1,6 @@
 # PhaserInit
 Phaser startup project
-
+> check the website here [https://shinkei.github.io/PhaserInit/](https://shinkei.github.io/PhaserInit/)
 More resources: 
 >
 - [Phaser Examples](http://phaser.io/examples)
