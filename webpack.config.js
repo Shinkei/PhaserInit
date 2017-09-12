@@ -13,7 +13,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   devServer: {
-    contentBase: './',
+    contentBase: './dist',
     port: 3000
   },
   module: {
