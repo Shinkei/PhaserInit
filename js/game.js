@@ -60,7 +60,6 @@ function create() {
   // another platform
   ledge = platform.create(-150, 250, 'ground');
   ledge.body.immovable = true;
-  game.add.sprite(0, 0, 'star');
 
   // player
   player = game.add.sprite(32, game.world.height - 150, 'dude');
@@ -206,17 +205,17 @@ function collectDiamond(player, diamond){
 function killPlayer(player){
   //death sound
   sfxDeath.play();
-  
+
   //loop animation to show the player going to heaven
   game.add.tween(player).to({ y: 70 }, 2000, Phaser.Easing.Quadratic.InOut, true, 0, 1000, true);
   game.time.events.loop(4000, resetGame, this);
-  
+
   var gameOverText = "\n...::GAME OVER::...";
   var style = { font: "65px Arial", fill: "#FFFFFF", align: "center"};
   game.add.text(game.world.centerX-300, 0, gameOverText, style);
-  
+
 }
 
 function resetGame(){
-  player.kill();  
+  player.kill();
 }
