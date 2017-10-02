@@ -1,0 +1,134 @@
+/// I'm Available for Hire
+/// at http://DapperGentlemen.com
+/// :D
+///
+/// Mint Chocolate Chip is the best icecream
+///
+///
+/// Read about how / why I made this here - http://articles.dappergentlemen.com/2015/07/15/flexbox-gameboy/
+
+////////////
+/// BASE /// base settings
+////////////
+
+html {font-size:8px;///used for rem base
+	    height:100%;///vertically fills page
+}
+
+body {height:100%;///vertically fills pg
+      margin:0;///browser reset
+}
+
+///////////////////////////
+/// GREYSCALE GENERATOR /// speaking of values
+///////////////////////////
+///use in html to change a box's
+///background value.
+///0=black
+///100=white
+
+@for $lightness from 0 through 100 {
+  .bg#{$lightness}
+  {background-color:
+    hsl(0deg, 0%, $lightness);
+  }
+}
+
+//////////////////////
+/// GRID GENERATOR ///
+//////////////////////
+///creates a dynamic flexbox grid system
+///where all units are relative
+
+$grid-min:1;///set this to your smallest desired value
+$grid-max:23;///set this to your largest desired value
+
+@for $grid from $grid-min through $grid-max {
+  .box#{$grid}
+    {display:flex;flex:$grid;
+  }
+}
+
+/// child boxes stack vertically in a column
+.column {flex-direction:column;}
+
+/// used to fill 100 of the vertical area
+.full-height {height:100%;}
+
+///////////
+/// SVG ///
+///////////
+
+///variables pointing to the svg locations
+///keeping things DRY
+///https://gist.github.com/ryanallen/0b607bc5d92b150aa279
+
+$button:
+  "https://s3-us-west-2.amazonaws.com/s.cdpn.io/52367/circle-84173e.svg";
+
+$start-select:
+  "https://s3-us-west-2.amazonaws.com/s.cdpn.io/52367/gb-start-button.svg";
+
+$speaker:
+  "https://s3-us-west-2.amazonaws.com/s.cdpn.io/52367/gb-speaker.svg";
+
+.svg-circle {
+  background-image: url($button);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.svg-pill {
+  background-image: url($start-select);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.svg-pills {
+  background-image: url($speaker);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+///used to offset the a and b buttons
+.rotate30 {transform: rotate(150deg);}
+
+/// ROUND CORNERS
+/// use in html to change a box's corners radii
+
+.corners05 {
+  border-radius:.5rem;
+}
+
+///loop to create corners
+@for $corners from 1 through 3 {
+  .corners#{$corners} {border-radius:$corners+rem;}
+}
+
+///64px - bottom right corner of gameboy
+.corner-br-8 {
+  border-bottom-right-radius:8rem;
+}
+
+///48px - bottom right corner of screen container
+.corner-br-6 {
+  border-bottom-right-radius:6rem;
+}
+
+@media all and (orientation: landscape) {
+  /// hides the original gameboy
+  .hide-portrait {display: none;}
+}
+
+@media all and (orientation: portrait) {
+  /// hides the original gameboy
+  .hide-landscape {display: none;}
+}
+
+$landscape:"https://s3-us-west-2.amazonaws.com/s.cdpn.io/52367/gba.svg";
+
+.svg-landscape {
+  background-image: url($landscape);
+  background-position: center;
+  background-repeat: no-repeat;
+}
