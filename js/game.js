@@ -58,7 +58,7 @@ function create() {
   var ledge = platform.create(400, 400, 'ground');
   ledge.body.immovable = true;
   // another platform
-  ledge = platform.create(-150, 250, 'ground');
+  ledge = platform.create(-150, 260, 'ground');
   ledge.body.immovable = true;
 
   // player
@@ -68,8 +68,8 @@ function create() {
   game.physics.arcade.enable(player);
 
   //Player physics properties, body represents the body in physics
-  player.body.bounce.y = 0.2;
-  player.body.gravity.y = 300;
+  player.body.bounce.y = 0.1;
+  player.body.gravity.y = 420;
   player.body.collideWorldBounds = true;
 
   // animate the dude to walk left and right
@@ -87,9 +87,9 @@ function create() {
   stars.enableBody = true;
 
   // create the stars
-  for (var i = 0; i < 12; i++) {
-    var star = stars.create(i * 70, 0, 'star');
-    star.body.gravity.y = 300;
+  for (var i = 0; i < 10; i++) {
+    var star = stars.create(i * 80, 0, 'star');
+    star.body.gravity.y = 400;
     star.body.bounce.y = 0.4 + Math.random() * 0.2;
     // add sound to each star object
     sfxStar.addMarker('star',0,1.5);
@@ -100,9 +100,9 @@ function create() {
   diamonds.enableBody = true;
 
   // create the diamonds
-  for (var i = 0; i < 6; i++) {
-    var diamond = diamonds.create(i * 120, 20, 'diamond');
-    diamond.body.gravity.y = 200;
+  for (var i = 0; i < 5; i++) {
+    var diamond = diamonds.create(i * 170, 20, 'diamond');
+    diamond.body.gravity.y = 500;
     diamond.body.bounce.y = 0.2 + Math.random() * 0.4;
     // add sound to each diamond object
     sfxDiamond.addMarker('diamond',0,1.5);
@@ -111,7 +111,7 @@ function create() {
   // baddie
   baddie = game.add.sprite(0, 0, 'baddie');
   game.physics.arcade.enable(baddie);
-  baddie.body.bounce.y = 0.2;
+  baddie.body.bounce.y = 1;
   baddie.body.gravity.y = 300;
   baddie.body.collideWorldBounds = true;
 
@@ -192,14 +192,21 @@ function collectStar(player, star){
   star.kill();
   score += 10;
   scoreText.text = 'Score: ' + score;
+
+  if(score == 200){
+    win();
+  }
 }
 
 function collectDiamond(player, diamond){
   // add sound to diamond before kill it
   sfxDiamond.play('diamond');
   diamond.kill();
-  score += 13;
+  score += 20;
   scoreText.text = 'Score: ' + score;
+  if(score == 200){
+    win();
+  }
 }
 
 function killPlayer(player){
@@ -214,6 +221,13 @@ function killPlayer(player){
   var style = { font: "65px Arial", fill: "#FFFFFF", align: "center"};
   game.add.text(game.world.centerX-300, 0, gameOverText, style);
 
+}
+
+function win() {
+  let gameOverWIn = '\n ...:: YOU WIN ::...';
+  var style = { font: "65px Arial", fill: "#FFFFFF", align: "center" };
+  game.add.text(game.world.centerX - 300, 0, gameOverWIn, style);
+  baddie.kill();
 }
 
 function resetGame(){
