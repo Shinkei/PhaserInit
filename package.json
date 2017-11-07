@@ -34,6 +34,7 @@
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
+    "npm": "^5.5.1",
     "phaser": "^2.6.2"
   }
 }
