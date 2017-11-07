@@ -72,10 +72,17 @@
 	Author Tobias Koppers @sokra
 */
 module.exports = function(src) {
-	if (typeof execScript !== "undefined")
-		execScript(src);
-	else
-		eval.call(null, src);
+	try {
+		if (typeof eval !== "undefined") {
+			eval.call(null, src);
+		} else if (typeof execScript !== "undefined") {
+			execScript(src);
+		} else {
+			console.error("[Script Loader] EvalError: No eval function available");
+		}
+	} catch (error) {
+		console.error("[Script Loader] ", error.message);
+	}
 }
 
 
@@ -139,6 +146,10 @@ function preload() {
 }
 
 function create() {
+
+  // set the game in the middle of the page
+  game.scale.pageAlignHorizontally = true;
+  game.scale.pageAlignVertically = true;
   // enable arcade Physics
   game.physics.startSystem(__WEBPACK_IMPORTED_MODULE_2_phaser__["Phaser"].Physics.ARCADE);
 
@@ -169,9 +180,8 @@ function create() {
   var ledge = platform.create(400, 400, 'ground');
   ledge.body.immovable = true;
   // another platform
-  ledge = platform.create(-150, 250, 'ground');
+  ledge = platform.create(-150, 260, 'ground');
   ledge.body.immovable = true;
-  game.add.sprite(0, 0, 'star');
 
   // player
   player = game.add.sprite(32, game.world.height - 150, 'dude');
@@ -180,8 +190,8 @@ function create() {
   game.physics.arcade.enable(player);
 
   //Player physics properties, body represents the body in physics
-  player.body.bounce.y = 0.2;
-  player.body.gravity.y = 300;
+  player.body.bounce.y = 0.1;
+  player.body.gravity.y = 420;
   player.body.collideWorldBounds = true;
 
   // animate the dude to walk left and right
@@ -199,9 +209,9 @@ function create() {
   stars.enableBody = true;
 
   // create the stars
-  for (var i = 0; i < 12; i++) {
-    var star = stars.create(i * 70, 0, 'star');
-    star.body.gravity.y = 300;
+  for (var i = 0; i < 10; i++) {
+    var star = stars.create(i * 80, 0, 'star');
+    star.body.gravity.y = 400;
     star.body.bounce.y = 0.4 + Math.random() * 0.2;
     // add sound to each star object
     sfxStar.addMarker('star',0,1.5);
@@ -212,9 +222,9 @@ function create() {
   diamonds.enableBody = true;
 
   // create the diamonds
-  for (var i = 0; i < 6; i++) {
-    var diamond = diamonds.create(i * 120, 20, 'diamond');
-    diamond.body.gravity.y = 200;
+  for (var i = 0; i < 5; i++) {
+    var diamond = diamonds.create(i * 170, 20, 'diamond');
+    diamond.body.gravity.y = 500;
     diamond.body.bounce.y = 0.2 + Math.random() * 0.4;
     // add sound to each diamond object
     sfxDiamond.addMarker('diamond',0,1.5);
@@ -223,13 +233,14 @@ function create() {
   // baddie
   baddie = game.add.sprite(0, 0, 'baddie');
   game.physics.arcade.enable(baddie);
-  baddie.body.bounce.y = 0.2;
+  baddie.body.bounce.y = 0.7;
   baddie.body.gravity.y = 300;
   baddie.body.collideWorldBounds = true;
 
   // animate the buddie
   baddie.animations.add('left', [0, 1], 10, true);
   baddie.animations.add('right', [2, 3], 10, true);
+  baddie.animations.add('stay', [1,2], 1, true);
 
   // variable that says if baddie go riht or left
   baddie_go_right = true;
@@ -260,25 +271,14 @@ function update() {
     player.animations.stop();
     player.frame = 4;
   }
-  if(player.body.y+16 > baddie.body.y){
-    if(baddie.x === game.world.width - 32){ // 32 is the width of the buddie
-      baddie.body.velocity.x = -80;
-      baddie.animations.play('left');
-    }else if(baddie.x === 0){
-      baddie.body.velocity.x = 80;
-      baddie.animations.play('right');
-    }
-  }else if(player.body.y+16 < Math.floor(baddie.body.y) && baddie.body.touching.down && hitPlatformBaddie){
-    console.log("player "+player.body.y);
-    console.log("baddie "+baddie.body.y);
-    baddie.body.velocity.y = -350;
-  }else if (player.body.x > baddie.body.x) {
-    baddie.body.velocity.x = 80;
-    baddie.animations.play('right');
 
-  }else if(player.body.x < baddie.body.x){
-    baddie.body.velocity.x = -80;
-    baddie.animations.play('left');
+  if(player.alive){
+    persecutionLogic();
+  }else{
+    // stop dog
+    baddie.body.velocity.x = 0;
+    baddie.body.bounce.y = 0;
+    baddie.animations.play('stay');
   }
 
   // Jump
@@ -304,32 +304,60 @@ function collectStar(player, star){
   star.kill();
   score += 10;
   scoreText.text = 'Score: ' + score;
+
+  if(score == 200){
+    win();
+  }
 }
 
 function collectDiamond(player, diamond){
   // add sound to diamond before kill it
   sfxDiamond.play('diamond');
   diamond.kill();
-  score += 13;
+  score += 20;
   scoreText.text = 'Score: ' + score;
+  if(score == 200){
+    win();
+  }
 }
 
 function killPlayer(player){
   //death sound
   sfxDeath.play();
-  
+
   //loop animation to show the player going to heaven
-  game.add.tween(player).to({ y: 70 }, 2000, __WEBPACK_IMPORTED_MODULE_2_phaser__["Phaser"].Easing.Quadratic.InOut, true, 0, 1000, true);
-  game.time.events.loop(4000, resetGame, this);
-  
+   player.kill();
+
   var gameOverText = "\n...::GAME OVER::...";
   var style = { font: "65px Arial", fill: "#FFFFFF", align: "center"};
   game.add.text(game.world.centerX-300, 0, gameOverText, style);
-  
+
 }
 
-function resetGame(){
-  player.kill();  
+function win() {
+  let gameOverWIn = '\n ...:: YOU WIN ::...';
+  var style = { font: "65px Arial", fill: "#FFFFFF", align: "center" };
+  game.add.text(game.world.centerX - 300, 0, gameOverWIn, style);
+  baddie.kill();
+}
+
+function persecutionLogic() {
+  if (player.body.y + 16 > baddie.body.y) {
+    if (baddie.x === game.world.width - 32) { // 32 is the width of the buddie
+      baddie.body.velocity.x = -80;
+      baddie.animations.play('left');
+    } else if (baddie.x === 0) {
+      baddie.body.velocity.x = 80;
+      baddie.animations.play('right');
+    }
+  } else if (player.body.x > baddie.body.x) {
+    baddie.body.velocity.x = 80;
+    baddie.animations.play('right');
+
+  } else if (player.body.x < baddie.body.x) {
+    baddie.body.velocity.x = -80;
+    baddie.animations.play('left');
+  }
 }
 
 
