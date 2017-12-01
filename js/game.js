@@ -28,6 +28,10 @@ function preload() {
 }
 
 function create() {
+
+  // set the game in the middle of the page
+  game.scale.pageAlignHorizontally = true;
+  game.scale.pageAlignVertically = true;
   // enable arcade Physics
   game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -111,13 +115,14 @@ function create() {
   // baddie
   baddie = game.add.sprite(0, 0, 'baddie');
   game.physics.arcade.enable(baddie);
-  baddie.body.bounce.y = 1;
+  baddie.body.bounce.y = 0.7;
   baddie.body.gravity.y = 300;
   baddie.body.collideWorldBounds = true;
 
   // animate the buddie
   baddie.animations.add('left', [0, 1], 10, true);
   baddie.animations.add('right', [2, 3], 10, true);
+  baddie.animations.add('stay', [1,2], 1, true);
 
   // variable that says if baddie go riht or left
   baddie_go_right = true;
@@ -148,25 +153,14 @@ function update() {
     player.animations.stop();
     player.frame = 4;
   }
-  if(player.body.y+16 > baddie.body.y){
-    if(baddie.x === game.world.width - 32){ // 32 is the width of the buddie
-      baddie.body.velocity.x = -80;
-      baddie.animations.play('left');
-    }else if(baddie.x === 0){
-      baddie.body.velocity.x = 80;
-      baddie.animations.play('right');
-    }
-  }else if(player.body.y+16 < Math.floor(baddie.body.y) && baddie.body.touching.down && hitPlatformBaddie){
-    console.log("player "+player.body.y);
-    console.log("baddie "+baddie.body.y);
-    baddie.body.velocity.y = -350;
-  }else if (player.body.x > baddie.body.x) {
-    baddie.body.velocity.x = 80;
-    baddie.animations.play('right');
 
-  }else if(player.body.x < baddie.body.x){
-    baddie.body.velocity.x = -80;
-    baddie.animations.play('left');
+  if(player.alive){
+    persecutionLogic();
+  }else{
+    // stop dog
+    baddie.body.velocity.x = 0;
+    baddie.body.bounce.y = 0;
+    baddie.animations.play('stay');
   }
 
   // Jump
@@ -214,8 +208,7 @@ function killPlayer(player){
   sfxDeath.play();
 
   //loop animation to show the player going to heaven
-  game.add.tween(player).to({ y: 70 }, 2000, Phaser.Easing.Quadratic.InOut, true, 0, 1000, true);
-  game.time.events.loop(4000, resetGame, this);
+   player.kill();
 
   var gameOverText = "\n...::GAME OVER::...";
   var style = { font: "65px Arial", fill: "#FFFFFF", align: "center"};
@@ -230,6 +223,21 @@ function win() {
   baddie.kill();
 }
 
-function resetGame(){
-  player.kill();
+function persecutionLogic() {
+  if (player.body.y + 16 > baddie.body.y) {
+    if (baddie.x === game.world.width - 32) { // 32 is the width of the buddie
+      baddie.body.velocity.x = -80;
+      baddie.animations.play('left');
+    } else if (baddie.x === 0) {
+      baddie.body.velocity.x = 80;
+      baddie.animations.play('right');
+    }
+  } else if (player.body.x > baddie.body.x) {
+    baddie.body.velocity.x = 80;
+    baddie.animations.play('right');
+
+  } else if (player.body.x < baddie.body.x) {
+    baddie.body.velocity.x = -80;
+    baddie.animations.play('left');
+  }
 }
