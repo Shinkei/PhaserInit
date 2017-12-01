@@ -8,7 +8,8 @@
     "localtunnel": "lt --port 3000",
     "share": "npm-run-all --parallel dev localtunnel",
     "build": "webpack",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open",
+    "clean": "rimraf ./dist/*"
   },
   "keywords": [
     "phaser",

@@ -312,7 +312,7 @@ function collectStar(player, star){
   scoreText.text = 'Score: ' + score;
 
   if(score == 200){
-    win(player);
+    win();
   }
 }
 
@@ -323,7 +323,7 @@ function collectDiamond(player, diamond){
   score += 20;
   scoreText.text = 'Score: ' + score;
   if(score == 200){
-    win(player);
+    win();
   }
 }
 
@@ -341,7 +341,7 @@ function killPlayer(player){
 
 }
 
-function win(player) {
+function win() {
   let gameOverWIn = '\n ...:: YOU WIN ::...';
   var style = { font: "65px Arial", fill: "#FFFFFF", align: "center" };
   game.add.text(game.world.centerX - 300, 0, gameOverWIn, style);
